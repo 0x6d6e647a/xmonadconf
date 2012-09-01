@@ -1,0 +1,42 @@
+Config { font = "xft:Inconsalata:pixelsize=16"
+       , bgColor = "black"
+       , fgColor = "grey"
+       , position = Static { xpos   = 0
+                           , ypos   = 0
+                           , width  = 1800
+                           , height = 20
+                           }
+       , commands = [ Run StdinReader
+                    , Run Cpu [ "-t", "CPU <total>%"
+                              , "-p", "3"
+                              , "-L", "33" , "-l", "green"
+                              , "-n", "orange"
+                              , "-H", "66" , "-h", "red"
+                              ] 10
+                    , Run Memory [ "-t","Mem <usedratio>%"
+                                 , "-p", "3"
+                                 , "-L", "33" , "-l", "green"
+                                 , "-n", "orange"
+                                 , "-H", "66" , "-h", "red"
+                                 ] 10
+                    , Run Swap [ "-t", "Swp <usedratio>%"
+                               , "-p", "3"
+                               , "-L", "33" , "-l", "green"
+                               , "-n", "orange"
+                               , "-H", "66" , "-h", "red"
+                               ] 10
+                    , Run Network "wlan0" ["-t","<dev><fc=#00FF00><rx></fc>/<fc=#FF0000><tx></fc>","-w","5"] 10
+                    , Run Network "eth0" ["-t","<dev><fc=#00FF00><rx></fc>/<fc=#FF0000><tx></fc>","-w","5"] 10
+                    , Run BatteryP ["BAT0"] [ "-t","Batt: <left>%"
+                                            , "-p", "3"
+                                            , "-L", "33", "-l", "red"
+                                            , "-n", "orange"
+                                            , "-H", "66", "-h", "green"
+                                            ] 30
+                    , Run Volume "default" "Master" ["-t","Vol: <volume>% <status>","-p","3"] 10
+                    , Run Date "%Y-%m-%d %I:%M%p" "date" 10
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }{ [%cpu%, %memory%, %swap%]   [%wlan0%, %eth0%]   [%default:Master%, %battery%]   <fc=#00CCFF>%date%</fc>"
+       }
